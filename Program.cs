@@ -6,19 +6,42 @@ namespace DesignPatterns
     {
         static void Main(string[] args)
         {
-            string providerName = "MySql";
-            IDbContext dbContext =  DbContextFactory.CreateDbContext(providerName);
+            #region  Builder
+            DbCommand dbCommand;
+            DbCommandDirector director = new DbCommandDirector();
 
-            if(dbContext == null)
-            {
-                Console.WriteLine("dbContext can't be null");
-            }
-            else
-            {
-                Console.WriteLine(dbContext.Open());
-                Console.WriteLine(dbContext.Close());
-            }
+            SqlCommand sqlCmd = new SqlCommand();
+            dbCommand = director.Build(sqlCmd);
+            PrintConsoleMessage(dbCommand.GetDbCommandInfo());
 
+            OracleCommand oraCmd = new OracleCommand();
+            dbCommand = director.Build(oraCmd);
+            PrintConsoleMessage(dbCommand.GetDbCommandInfo());
+
+            #endregion Builder
+            #region Factory
+            // string providerName = "MySql";
+            // IDbContext dbContext =  DbContextFactory.CreateDbContext(providerName);
+
+            // if(dbContext == null)
+            // {
+            //     Console.WriteLine("dbContext can't be null");
+            // }
+            // else
+            // {
+            //     Console.WriteLine(dbContext.Open());
+            //     Console.WriteLine(dbContext.Close());
+            // }
+            #endregion Factory
+
+            void PrintConsoleMessage(string message)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(message);
+                Console.WriteLine("----------------------------------------");
+                Console.WriteLine(Environment.NewLine);
+                Console.ResetColor();
+            }
         }
     }
 
